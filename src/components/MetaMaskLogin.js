@@ -48,6 +48,7 @@ const MetaMaskLogin = () => {
             }
         } catch (error) {
             console.error("Error fetching wallet info:", error.message);
+            logout()
             const errorMessage = error.message.split(":")[1]?.trim();
             toast.error(errorMessage ? errorMessage : error.message);
         } finally {
@@ -116,14 +117,16 @@ const MetaMaskLogin = () => {
             ) : (
                 <div>
                     {!isLoggedIn ? (
-                        <button onClick={loginWithMetaMask} style={styles.button}>
-                            <img src={metamaskLogo} alt="Metamask Logo" style={styles.logo} />
-                            Login with Metamask
-                        </button>
+                        <div className="metamask-btn">
+                            <button onClick={loginWithMetaMask} style={styles.button}>
+                                <img src={metamaskLogo} alt="Metamask Logo" style={styles.logo} />
+                                Login with Metamask
+                            </button>
+                        </div>
                     ) : (
-                        <div>
+                        <div className="wallet-content">
                             <p>{walletAddress && walletAddress.length > 0
-                                ? `Connected: ${walletAddress.substring(
+                                ? `Connected to: ${walletAddress.substring(
                                     0,
                                     6
                                 )}...${walletAddress.substring(38)}`
