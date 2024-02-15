@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MetaMaskLogin from './MetaMaskLogin';
+import MetaMaskLogin from './components/MetaMaskLogin';
 
 function App() {
     return (

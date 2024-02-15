@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import detectEthereumProvider from "@metamask/detect-provider";
-import Loder from "./components/common/Loader";
-import metamaskLogo from '../src/assets/MetaMask.png';
-import { formatBalance, formatChainAsNum } from './components/utils';
+import Loder from "./common/Loader";
+import metamaskLogo from '../assets/MetaMask.png';
+import { formatBalance, formatChainAsNum } from './utils';
 
 const MetaMaskLogin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -74,7 +74,7 @@ const MetaMaskLogin = () => {
                     setSignature(signature);
                     localStorage.setItem("signatureToken", signature);
                     const expiration = new Date();
-                    expiration.setHours(expiration.getHours() + 12); // Set expiration to 12 hours from now
+                    expiration.setHours(expiration.getHours() + 12);
                     localStorage.setItem("signatureTokenExpiration", expiration);
                     const balance = await provider.request({
                         method: "eth_getBalance",
@@ -122,7 +122,12 @@ const MetaMaskLogin = () => {
                         </button>
                     ) : (
                         <div>
-                            <p>Logged in with MetaMask. Wallet Address: {walletAddress}</p>
+                            <p>{walletAddress && walletAddress.length > 0
+                                ? `Connected: ${walletAddress.substring(
+                                    0,
+                                    6
+                                )}...${walletAddress.substring(38)}`
+                                : "Connect Wallet"}</p>
                             {walletBalance && <p>Wallet Balance: {walletBalance}</p>}
                             {chainId && (
                                 <>
@@ -130,7 +135,6 @@ const MetaMaskLogin = () => {
                                     <p>Numeric ChainId: {formatChainAsNum(chainId)}</p>
                                 </>
                             )}
-                            {/* {signature && <p>Signature: {signature}</p>} */}
                             <button onClick={logout}>Logout</button>
                         </div>
                     )}
