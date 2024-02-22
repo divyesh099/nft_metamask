@@ -9,12 +9,17 @@
     margin: 0 auto;
 }
 
+.document-page .condationsType {
+    color: #ffcc00;
+    text-decoration: underline;
+}
+
 .document-page form {
     display: flex;
     flex-direction: column;
 }
 
-.document-page h2 {
+.document-page .ClaimHeading {
     display: flex;
     justify-content: center;
     text-decoration: underline;
@@ -54,4 +59,90 @@
 
 .document-page .document-page-submit:hover {
     background-color: #ddaa00;
+}
+
+.describe .AccordionItemback {
+    background-color: #333;
+    color: #fff;
+}
+
+.describe .AccordionHead {
+    color: #111;
+    font-weight: 700;
+
+}
+
+.describe .AccordionLink {
+    display: flex;
+    flex-direction: unset;
+    justify-content: space-evenly;
+    margin-top: 10PX;
+}
+
+.accordion-header button {
+    background-color: #777;
+}
+
+.detailsForm {
+    margin-top: 20px;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    margin: 0 auto;
+
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.btn-submit {
+    background-color: #198754;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.btn-submit:hover {
+    background-color: #2bba77;
+}
+
+.detailsForm .error {
+    color: rgb(206, 68, 68);
+    text-align: center;
+}
+
+.ClaimHeading {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    color: #ffcc00;
+}
+
+.error {
+    color: rgb(206, 68, 68);
 }

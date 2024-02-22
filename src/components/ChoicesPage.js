@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const ChoicesPage = () => {
     const navigate = useNavigate();
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('NASH-WERTHAN Art Collection & Product Collaboration');
 
 
     const handleCheckboxChange = (event) => {

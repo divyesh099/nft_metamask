@@ -6,6 +6,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './components/ChoicesPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DocumentPage from './components/DocumentPage';
+import ClaimProductPage from './components/ClaimProductPage';
+import ContactInformation from './components/Contactinfo';
 
 function App() {
     return (
@@ -14,6 +16,8 @@ function App() {
                 <Route path="/" element={<MetaMaskLogin />} />
                 <Route path="/Home" element={<PrivateRoute element={<Home />} />} />
                 <Route path="/NashWerthan" element={<PrivateRoute element={<DocumentPage />} />} />
+                <Route path="/ClaimProduct" element={<PrivateRoute element={<ClaimProductPage />} />} />
+                <Route path="/ContactInfo" element={<PrivateRoute element={<ContactInformation />} />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>
