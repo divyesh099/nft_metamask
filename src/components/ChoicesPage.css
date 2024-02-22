@@ -1,0 +1,59 @@
+
+.second-page {
+    background-color: #111;
+    color: #fff;
+    padding: 2rem;
+}
+
+.second-page .describe {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.second-page form {
+    display: flex;
+    flex-direction: column;
+}
+
+.second-page h2 {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    color: #ffcc00;
+}
+
+.second-page h4 {
+    color: rgb(235, 140, 77);
+    display: flex;
+    margin: 15px auto;
+    text-decoration: underline;
+}
+
+.second-page p {
+    color: #fff;
+}
+
+.second-page label {
+    color: #fff;
+    text-align: center;
+}
+
+.second-page input[type="radio"] {
+    margin-right: 5px;
+}
+
+.second-page button {
+    background-color: #ffcc00;
+    color: #111;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.second-page button:hover {
+    background-color: #ddaa00;
+}

@@ -1,0 +1,57 @@
+.document-page {
+    background-color: #111;
+    color: #fff;
+    padding: 2rem;
+}
+
+.document-page .describe {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.document-page form {
+    display: flex;
+    flex-direction: column;
+}
+
+.document-page h2 {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    color: #ffcc00;
+}
+
+.document-page h4 {
+    color: rgb(235, 140, 77);
+    display: flex;
+    margin: 15px auto;
+    text-decoration: underline;
+}
+
+.document-page p {
+    color: #fff;
+}
+
+.document-page label {
+    color: #fff;
+}
+
+.document-page input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.document-page .document-page-submit {
+    background-color: #ffcc00;
+    color: #111;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.document-page .document-page-submit:hover {
+    background-color: #ddaa00;
+}

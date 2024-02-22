@@ -3,7 +3,9 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MetaMaskLogin from './components/MetaMaskLogin';
 import PrivateRoute from './components/PrivateRoute';
-import Home from './components/Home';
+import Home from './components/ChoicesPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import DocumentPage from './components/DocumentPage';
 
 function App() {
     return (
@@ -11,6 +13,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<MetaMaskLogin />} />
                 <Route path="/Home" element={<PrivateRoute element={<Home />} />} />
+                <Route path="/NashWerthan" element={<PrivateRoute element={<DocumentPage />} />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>

@@ -1,0 +1,42 @@
+.header {
+    background-color: #222;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    font-size: 1.5rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.header a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+}
+
+.header a:hover {
+    color: #ffcc00;
+}
+
+.user-dropdown .dropdown-menu {
+    background-color: #222 !important;
+}
+
+.user-dropdown .dropdown-item {
+    color: #ffff !important;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: #ffcc00 !important;
+    color: #222 !important;
+}
