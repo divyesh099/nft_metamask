@@ -1,27 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import detectEthereumProvider from "@metamask/detect-provider";
-import Loder from "./common/Loader";
 import metamaskLogo from '../assets/MetaMask.png';
 import { formatBalance, formatChainAsNum } from './utils';
+import { useAuth } from "./context/auth-context";
+import { useNavigate } from "react-router-dom";
+import CryptoJS from 'crypto-js';
 
 const MetaMaskLogin = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [walletAddress, setWalletAddress] = useState("");
-    const [walletBalance, setWalletBalance] = useState("");
-    const [chainId, setChainId] = useState("");
-    const [signature, setSignature] = useState("");
+    const { setLoading, setIsAuthenticated, setMetaMaskData, logout } = useAuth();
+    const navigate = useNavigate();
+    const SECRET_KEY = '8hx(C#O6$RtRkV0Vcu^8J#^INVfHH!OC';
 
     useEffect(() => {
-        const token = localStorage.getItem("signatureToken");
-        const expiration = localStorage.getItem("signatureTokenExpiration");
+        const fetchData = async () => {
+            const encrypted = localStorage.getItem('encryptedData');
+            if (encrypted) {
+                const decryptedBytes = CryptoJS.AES.decrypt(encrypted, SECRET_KEY);
+                const decryptedString = decryptedBytes.toString(CryptoJS.enc.Utf8);
+                const decryptedData = JSON.parse(decryptedString);
 
-        if (token && expiration && new Date(expiration) > new Date()) {
-            setSignature(token);
-            setIsLoggedIn(true);
-            fetchWalletInfo()
-        }
+                const currentTime = new Date().getTime();
+                if (currentTime < decryptedData.expiry) {
+                    setMetaMaskData(prevState => ({
+                        ...prevState,
+                        signature: decryptedData.signature,
+                    }))
+                    await fetchWalletInfo();
+                } else {
+                    localStorage.removeItem('encryptedData');
+                    setIsAuthenticated(false);
+                }
+            } else {
+                setIsAuthenticated(false);
+            }
+            setLoading(false);
+        };
+
+        fetchData();
     }, []);
 
     const fetchWalletInfo = async () => {
@@ -31,64 +47,70 @@ const MetaMaskLogin = () => {
                 const accounts = await provider.request({ method: "eth_requestAccounts" });
                 if (accounts.length > 0) {
                     const address = accounts[0];
-                    setWalletAddress(address);
                     const balance = await provider.request({
                         method: "eth_getBalance",
                         params: [address, "latest"],
                     });
-                    setWalletBalance(formatBalance(balance));
                     const networkId = await provider.request({ method: "net_version" });
-                    setChainId(networkId);
-                    setIsLoggedIn(true);
+                    setMetaMaskData(prevState => ({
+                        ...prevState,
+                        walletAddress: address,
+                        walletBalance: formatBalance(balance),
+                        chainId: networkId
+                    }));
+                    setIsAuthenticated(true);
+                    navigate('/Home');
                 } else {
-                    console.log("No accounts found in MetaMask.");
+                    setIsAuthenticated(false);
                 }
             } else {
                 window.open("https://metamask.io/download/", "_blank");
             }
         } catch (error) {
             console.error("Error fetching wallet info:", error.message);
-            logout()
             const errorMessage = error.message.split(":")[1]?.trim();
             toast.error(errorMessage ? errorMessage : error.message);
+            logout();
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
-
     const loginWithMetaMask = async () => {
-        setIsLoading(true);
+        setLoading(true);
         try {
             const provider = await detectEthereumProvider();
             if (provider) {
                 const accounts = await provider.request({ method: "eth_requestAccounts" });
                 if (accounts.length > 0) {
                     const address = accounts[0];
-                    setWalletAddress(address);
-                    console.log("Logged in with MetaMask. Wallet Address:", address);
                     const message = `This request will not trigger a blockchain transaction or cost any gas fees.\n\nWallet address:\n${address}`;
                     const signature = await provider.request({
                         method: "personal_sign",
                         params: [message, address],
                     });
-                    setSignature(signature);
-                    localStorage.setItem("signatureToken", signature);
-                    const expiration = new Date();
-                    expiration.setHours(expiration.getHours() + 12);
-                    localStorage.setItem("signatureTokenExpiration", expiration);
+                    const currentTime = new Date().getTime();
+                    const encryptedData = { signature, expiry: currentTime + 24 * 60 * 60 * 1000 };
+                    const encryptedString = JSON.stringify(encryptedData);
+                    const encrypted = CryptoJS.AES.encrypt(encryptedString, SECRET_KEY).toString();
+                    localStorage.setItem('encryptedData', encrypted);
                     const balance = await provider.request({
                         method: "eth_getBalance",
                         params: [address, "latest"],
                     });
-                    setWalletBalance(formatBalance(balance));
                     const networkId = await provider.request({ method: "net_version" });
-                    setChainId(networkId);
-                    setIsLoggedIn(true);
+                    setMetaMaskData(prevState => ({
+                        ...prevState,
+                        walletAddress: address,
+                        walletBalance: formatBalance(balance),
+                        chainId: networkId,
+                        signature
+                    }));
                     toast.success('Successfully logged in with MetaMask.')
-                    console.log("Signature:", signature);
+                    setIsAuthenticated(true);
+                    navigate('/Home');
                 } else {
-                    console.log("No accounts found in MetaMask.");
+                    setIsAuthenticated(false);
                 }
             } else {
                 window.open("https://metamask.io/download/", "_blank");
@@ -97,52 +119,18 @@ const MetaMaskLogin = () => {
             console.error("Error connecting to MetaMask:", error.message);
             const errorMessage = error.message.split(":")[1]?.trim();
             toast.error(errorMessage ? errorMessage : error.message);
+            setIsAuthenticated(false);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
-    const logout = () => {
-        setIsLoggedIn(false);
-        setWalletAddress("");
-        setSignature("");
-        localStorage.removeItem("signatureToken");
-        localStorage.removeItem("signatureTokenExpiration");
-    };
-
     return (
-        <div>
-            {isLoading ? (
-                <Loder />
-            ) : (
-                <div>
-                    {!isLoggedIn ? (
-                        <div className="metamask-btn">
-                            <button onClick={loginWithMetaMask} style={styles.button}>
-                                <img src={metamaskLogo} alt="Metamask Logo" style={styles.logo} />
-                                Login with Metamask
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="wallet-content">
-                            <p>{walletAddress && walletAddress.length > 0
-                                ? `Connected to: ${walletAddress.substring(
-                                    0,
-                                    6
-                                )}...${walletAddress.substring(38)}`
-                                : "Connect Wallet"}</p>
-                            {walletBalance && <p>Wallet Balance: {walletBalance}</p>}
-                            {chainId && (
-                                <>
-                                    <p>Hex ChainId: {chainId}</p>
-                                    <p>Numeric ChainId: {formatChainAsNum(chainId)}</p>
-                                </>
-                            )}
-                            <button onClick={logout}>Logout</button>
-                        </div>
-                    )}
-                </div>
-            )}
+        <div className="metamask-btn">
+            <button onClick={loginWithMetaMask} style={styles.button}>
+                <img src={metamaskLogo} alt="Metamask Logo" style={styles.logo} />
+                Login with Metamask
+            </button>
         </div>
     );
 };
