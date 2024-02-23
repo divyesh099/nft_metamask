@@ -25,9 +25,6 @@ const DocumentPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (isChecked.acceptanceAgreement && isChecked.privacy) {
-            console.log("Form submitted!");
-            console.log("Acceptance Agreement Checked:", isChecked.acceptanceAgreement);
-            console.log("Privacy Checked:", isChecked.privacy);
             navigate('/ClaimProduct');
         } else {
             toast.error("Please read and agree to the terms of service and privacy policy", { position: "bottom-right" });

@@ -1,9 +1,11 @@
 export const formatBalance = (rawBalance) => {
-  const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2);
-  return balance;
+    const etherBalanceInWei = parseFloat(rawBalance) / 1e18;
+    const etherPriceInUsd = 2934.45; // Replace with actual exchange rate
+    const usdBalance = etherBalanceInWei * etherPriceInUsd;
+    return usdBalance.toFixed(2);
 };
 
 export const formatChainAsNum = (chainIdHex) => {
-  const chainIdNum = parseInt(chainIdHex);
-  return chainIdNum;
+    const chainIdNum = parseInt(chainIdHex);
+    return chainIdNum;
 };

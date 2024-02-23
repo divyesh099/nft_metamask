@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useAuth } from './context/auth-context';
+import { useNavigate } from 'react-router-dom';
 
 const ContactInformation = () => {
+    const { setMetaMaskData } = useAuth();
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -28,7 +32,18 @@ const ContactInformation = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log("Form submitted successfully!");
+            setMetaMaskData(prevState => ({
+                ...prevState,
+                name,
+                email,
+                phone,
+                shippingAddress,
+            }))
+            setShippingAddress('');
+            setName('')
+            setPhone('')
+            setEmail('')
+            navigate('/PaymentInfo')
         }
     };
 

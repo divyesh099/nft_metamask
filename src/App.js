@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DocumentPage from './components/DocumentPage';
 import ClaimProductPage from './components/ClaimProductPage';
 import ContactInformation from './components/Contactinfo';
+import PaymentInfo from './components/PaymentInfo';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/NashWerthan" element={<PrivateRoute element={<DocumentPage />} />} />
                 <Route path="/ClaimProduct" element={<PrivateRoute element={<ClaimProductPage />} />} />
                 <Route path="/ContactInfo" element={<PrivateRoute element={<ContactInformation />} />} />
+                <Route path="/PaymentInfo" element={<PrivateRoute element={<PaymentInfo />} />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>

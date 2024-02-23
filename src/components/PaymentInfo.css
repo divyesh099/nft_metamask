@@ -1,0 +1,19 @@
+.main-info {
+    max-width: 500px;
+}
+
+.main-info p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.main-info p span {
+    display: block;
+}
+
+.main-info input[type='checkbox'] {
+    margin-right: 5px;
+}
