@@ -126,28 +126,18 @@ function PaymentInfo() {
             </p>
             {shippingMethod && (
                 <div>
-                    {!isInternational && (
-                        <p className='border-0 mb-0'>
-                            <span>Shipping Costs (Domestic):</span>
-                            <span>
-                                ${shippingMethod === 'triangleTube' ? shippingCosts.triangleTube.domestic : shippingCosts.box.domestic}
-                            </span>
-                        </p>
-                    )}
-                    <div className='border-bottom pb-1'>
+                    <div className='border-0 mb-0'>
                         <label>
                             <input type="checkbox" checked={isInternational} onChange={handleInternationalChange} />
                             International Shipping
                         </label>
-                        {isInternational && (
-                            <div className='d-flex align-items-center justify-content-between'>
-                                <span>Shipping Costs (International):</span>
-                                <span>
-                                    ${shippingMethod === 'triangleTube' ? shippingCosts.triangleTube.international : shippingCosts.box.international}
-                                </span>
-                            </div>
-                        )}
                     </div>
+                    <p className='border-bottom pb-1'>
+                        <span>Shipping Costs {isInternational ? `(International):` : `(Domestic):`}</span>
+                        <span>
+                            ${isInternational ? `${shippingMethod === 'triangleTube' ? shippingCosts.triangleTube.international : shippingCosts.box.international}` : `${shippingMethod === 'triangleTube' ? shippingCosts.triangleTube.domestic : shippingCosts.box.domestic}`}
+                        </span>
+                    </p>
                 </div>
             )}
             <p>
