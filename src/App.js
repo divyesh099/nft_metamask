@@ -31,8 +31,7 @@ function App() {
 function RegularMetadata() {
     const [jsonData, setJsonData] = useState(null);
     const { filename } = useParams();
-    const jsonDataPath = `/json-files/${filename}`;
-    console.log(jsonDataPath);
+    const jsonDataPath = `https://nft-json-deta.fra1.digitaloceanspaces.com/json-files/${filename}`;
 
     useEffect(() => {
         const fetchData = async () => {
