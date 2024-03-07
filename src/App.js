@@ -37,7 +37,6 @@ function RegularMetadata() {
         const fetchData = async () => {
             try {
                 const response = await fetch(jsonDataPath);
-                console.log(response);
                 if (!response.ok) {
                     throw new Error('Error fetching JSON');
                 }
