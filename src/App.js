@@ -9,7 +9,6 @@ import DocumentPage from './components/DocumentPage';
 import ClaimProductPage from './components/ClaimProductPage';
 import ContactInformation from './components/Contactinfo';
 import PaymentInfo from './components/PaymentInfo';
-import JsonDataViewer from './components/JsonDataViewer';
 
 function App() {
     return (
@@ -21,7 +20,7 @@ function App() {
                 <Route path="/ClaimProduct" element={<PrivateRoute element={<ClaimProductPage />} />} />
                 <Route path="/ContactInfo" element={<PrivateRoute element={<ContactInformation />} />} />
                 <Route path="/PaymentInfo" element={<PrivateRoute element={<PaymentInfo />} />} />
-                <Route path="/regular-metadata/:filename" element={<RegularMetadata />} />
+                <Route path="/rto-metadata/:filename" element={<RegularMetadata />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>
@@ -31,26 +30,23 @@ function App() {
 function RegularMetadata() {
     const [jsonData, setJsonData] = useState(null);
     const { filename } = useParams();
-    const jsonDataPath = `https://nft-json-deta.fra1.digitaloceanspaces.com/json-files/${filename}`;
+    const jsonDataPath = `/rto-metadata/${filename}`;
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchJsonData = async () => {
             try {
                 const response = await fetch(jsonDataPath);
-                console.log(response);
-                if (!response.ok) {
-                    throw new Error('Error fetching JSON');
-                }
                 const data = await response.json();
                 setJsonData(data);
             } catch (error) {
-                console.error('Error fetching JSON:', error);
+                console.error('Error fetching JSON data:', error);
             }
         };
-        fetchData();
+
+        fetchJsonData();
     }, [jsonDataPath]);
 
-    return jsonData ? <JsonDataViewer data={jsonData} /> : null;
+    return jsonData ? jsonData : 'File not found';
 }
 
 export default App;
